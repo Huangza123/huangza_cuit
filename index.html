@@ -583,13 +583,7 @@
                     <div><i class="fas fa-chalkboard-user"></i> Organizer: Stanford AI Seminar Series</div>
                 </div>
             </div>-->
-            <div class="stats-container">
-                <div class="visit-stats" id="visitCounter">
-                    <i class="fas fa-chart-simple"></i> 
-                    <span>Visitors: </span>
-                    <span id="visitCountValue">—</span>
-                </div>
-            </div>
+            
 
             <footer>
                 <i class="far fa-calendar-alt"></i> Last updated: April 2026 · Dr. Zhan ao Huang 
@@ -598,67 +592,7 @@
     </div>
 </div>
 
-<script>
-    // 访问人数统计：优先使用 countapi.xyz 免费全局计数服务，失败时回退到 localStorage 模拟
-    (function initVisitCounter() {
-        const NAMESPACE = 'emilyclark_cv';
-        const KEY = 'visits';
-        const API_URL = `https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}`;
-        const countElement = document.getElementById('visitCountValue');
-        
-        // 更新显示数字
-        function setCountDisplay(value) {
-            if (countElement) {
-                countElement.innerText = value;
-            }
-        }
-        
-        // 回退方案：使用 localStorage 累计（仅当前设备）
-        function fallbackLocalStorage() {
-            try {
-                let localCount = localStorage.getItem('cv_visits_fallback');
-                if (localCount === null) {
-                    localCount = 1;
-                } else {
-                    localCount = parseInt(localCount, 10) + 1;
-                }
-                localStorage.setItem('cv_visits_fallback', localCount);
-                setCountDisplay(localCount);
-                // 添加一个小提示图标说明是本地计数
-                const parent = document.getElementById('visitCounter');
-                if (parent && !parent.querySelector('.fallback-badge')) {
-                    const badge = document.createElement('span');
-                    badge.className = 'fallback-badge';
-                    badge.style.marginLeft = '6px';
-                    badge.style.fontSize = '0.7rem';
-                    badge.style.opacity = '0.7';
-                    badge.innerHTML = '(local)';
-                    parent.appendChild(badge);
-                }
-            } catch(e) {
-                setCountDisplay('?');
-            }
-        }
-        
-        // 尝试使用 countapi
-        fetch(API_URL, { method: 'GET', mode: 'cors', cache: 'no-store' })
-            .then(response => {
-                if (!response.ok) throw new Error('API response not ok');
-                return response.json();
-            })
-            .then(data => {
-                if (data && typeof data.value === 'number') {
-                    setCountDisplay(data.value);
-                } else {
-                    throw new Error('Invalid response format');
-                }
-            })
-            .catch(error => {
-                console.warn('CountAPI failed, using localStorage fallback:', error);
-                fallbackLocalStorage();
-            });
-    })();
-</script>
+
 
 </body>
 </html>
